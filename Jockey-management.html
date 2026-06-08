@@ -27,7 +27,7 @@
 
         body {
             font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
-            background: var(--primary-bg);
+            background: linear-gradient(135deg, #f4fbf9 0%, #e6f7f2 100%);
             color: var(--text-primary);
             line-height: 1.5;
             min-height: 100vh;
@@ -39,7 +39,6 @@
             margin: 0 auto;
         }
 
-        /* ============== HEADER ============== */
         .header {
             display: flex;
             align-items: center;
@@ -50,7 +49,6 @@
             border-radius: 24px;
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow-sm);
-            transition: all var(--transition);
         }
 
         .header-content h1 {
@@ -80,7 +78,6 @@
             box-shadow: 0 8px 14px rgba(16, 185, 129, 0.2);
         }
 
-        /* ============== CARD (đồng bộ khung) ============== */
         .card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -88,11 +85,6 @@
             overflow: hidden;
             margin-bottom: 28px;
             box-shadow: var(--shadow-sm);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .card:hover {
-            box-shadow: var(--shadow-md);
         }
 
         .card-header {
@@ -112,44 +104,12 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            letter-spacing: -0.2px;
         }
 
         .card-body {
             padding: 24px;
         }
 
-        /* ============== STATS SECTION (giữ lại nếu dùng sau) ============== */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        .stat-box {
-            background: var(--secondary-bg);
-            padding: 16px;
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--accent-green);
-            margin-bottom: 5px;
-        }
-
-        .stat-label {
-            font-size: 13px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* ============== FORM GROUP ============== */
         .form-group {
             margin-bottom: 20px;
         }
@@ -166,12 +126,10 @@
             font-weight: 600;
             font-size: 13px;
             color: #115e59;
-            letter-spacing: 0.3px;
         }
 
         .form-label .required {
             color: #ef4444;
-            margin-left: 2px;
         }
 
         .form-input,
@@ -202,7 +160,6 @@
             resize: vertical;
         }
 
-        /* ============== FILE UPLOAD ============== */
         .file-upload {
             border: 2px dashed var(--border-color);
             border-radius: 20px;
@@ -227,7 +184,6 @@
             margin-bottom: 8px;
         }
 
-        /* ============== DOCUMENTS TABLE ============== */
         .table-wrapper {
             overflow-x: auto;
         }
@@ -246,8 +202,6 @@
             color: #115e59;
             border-bottom: 1px solid var(--border-color);
             background: #ecfdf5;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         .table tbody td {
@@ -256,11 +210,6 @@
             vertical-align: middle;
         }
 
-        .table tbody tr:hover {
-            background: rgba(16, 185, 129, 0.04);
-        }
-
-        /* ============== BADGE ============== */
         .badge {
             display: inline-block;
             padding: 5px 12px;
@@ -280,12 +229,6 @@
             color: #b45309;
         }
 
-        .badge-expired {
-            background: rgba(239, 68, 68, 0.15);
-            color: #b91c1c;
-        }
-
-        /* ============== BUTTONS ============== */
         .button-group {
             display: flex;
             gap: 12px;
@@ -309,7 +252,6 @@
         .btn-primary {
             background: var(--accent-green);
             color: white;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
 
         .btn-primary:hover {
@@ -340,7 +282,6 @@
             flex-wrap: wrap;
         }
 
-        /* ============== RESPONSIVE ============== */
         @media (max-width: 768px) {
             body {
                 padding: 20px 16px;
@@ -358,15 +299,11 @@
                 flex-direction: column;
                 align-items: flex-start;
             }
-            .button-group {
-                justify-content: flex-start;
-            }
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <!-- HEADER -->
     <div class="header">
         <div class="header-content">
             <h1>🏇 Quản Lý Jockey</h1>
@@ -375,7 +312,6 @@
         <div class="header-avatar">🏇</div>
     </div>
 
-    <!-- 1. THÔNG TIN CÁ NHÂN -->
     <div class="card">
         <div class="card-header">
             <h2>👤 Thông Tin Cá Nhân</h2>
@@ -421,7 +357,6 @@
         </div>
     </div>
 
-    <!-- 2. THÔNG TIN CHUYÊN NGHIỆP -->
     <div class="card">
         <div class="card-header">
             <h2>💼 Thông Tin Chuyên Nghiệp</h2>
@@ -448,7 +383,6 @@
         </div>
     </div>
 
-    <!-- 3. GIẤY CHỨNG CHỈ & TÀI LIỆU (ĐÃ SỬA CẤU TRÚC LỖI KHUNG) -->
     <div class="card">
         <div class="card-header">
             <h2>📄 Giấy Chứng Chỉ & Tài Liệu</h2>
@@ -458,61 +392,27 @@
             <div class="table-wrapper">
                 <table class="table">
                     <thead>
-                        <tr>
-                            <th>Loại Tài Liệu</th>
-                            <th>Ngày Cấp</th>
-                            <th>Hết Hạn</th>
-                            <th>Trạng Thái</th>
-                            <th>Hành Động</th>
-                        </tr>
+                        <tr><th>Loại Tài Liệu</th><th>Ngày Cấp</th><th>Hết Hạn</th><th>Trạng Thái</th><th>Hành Động</th></tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>🎓 Chứng Chỉ Jockey</td>
-                            <td>15/03/2020</td>
-                            <td>15/03/2025</td>
-                            <td><span class="badge badge-valid">Hợp Lệ</span></td>
-                            <td class="action-buttons">
-                                <button class="btn btn-secondary btn-sm">Xem</button>
-                                <button class="btn btn-secondary btn-sm">Xóa</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>🏥 Khám Sức Khỏe</td>
-                            <td>01/06/2024</td>
-                            <td>01/06/2025</td>
-                            <td><span class="badge badge-valid">Hợp Lệ</span></td>
-                            <td class="action-buttons">
-                                <button class="btn btn-secondary btn-sm">Xem</button>
-                                <button class="btn btn-secondary btn-sm">Xóa</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>📋 Bảo Hiểm Chuyên Nghiệp</td>
-                            <td>01/01/2024</td>
-                            <td>31/12/2024</td>
-                            <td><span class="badge badge-expiring">Sắp Hết Hạn</span></td>
-                            <td class="action-buttons">
-                                <button class="btn btn-secondary btn-sm">Xem</button>
-                                <button class="btn btn-secondary btn-sm">Xóa</button>
-                            </td>
-                        </tr>
+                        <tr><td>🎓 Chứng Chỉ Jockey</td><td>15/03/2020</td><td>15/03/2025</td><td><span class="badge badge-valid">Hợp Lệ</span></td><td class="action-buttons"><button class="btn btn-secondary btn-sm">Xem</button><button class="btn btn-secondary btn-sm">Xóa</button></td></tr>
+                        <tr><td>🏥 Khám Sức Khỏe</td><td>01/06/2024</td><td>01/06/2025</td><td><span class="badge badge-valid">Hợp Lệ</span></td><td class="action-buttons"><button class="btn btn-secondary btn-sm">Xem</button><button class="btn btn-secondary btn-sm">Xóa</button></td></tr>
+                        <tr><td>📋 Bảo Hiểm Chuyên Nghiệp</td><td>01/01/2024</td><td>31/12/2024</td><td><span class="badge badge-expiring">Sắp Hết Hạn</span></td><td class="action-buttons"><button class="btn btn-secondary btn-sm">Xem</button><button class="btn btn-secondary btn-sm">Xóa</button></td></tr>
                     </tbody>
                 </table>
             </div>
-            <!-- Thêm khu vực upload giấy tờ (tùy chọn tạo cảm giác đầy đủ) -->
             <div class="file-upload" style="margin-top: 24px;">
-                <div class="file-upload-icon">📎</div>
-                <p>Kéo thả hoặc click để tải lên giấy tờ mới</p>
+                <div class="file-upload-icon"></div>
+                <p>Kéo thả hoặc click để tải lên giấy tờ</p>
                 <input type="file" accept=".pdf,.jpg,.png">
             </div>
         </div>
     </div>
 
-    <!-- 4. NÚT LƯU TỔNG THỂ (tạo sự cân bằng) -->
-    <div class="button-group" style="justify-content: flex-end; margin-top: 8px; margin-bottom: 16px;">
-        <button class="btn btn-secondary">❌ Hủy</button>
-        <button class="btn btn-primary">💾 Lưu Thông Tin</button>
+    <!-- Nút Quay lại và Lưu -->
+    <div class="button-group" style="justify-content: space-between; margin-top: 8px; margin-bottom: 16px;">
+        <button class="btn btn-secondary" onclick="window.location.href='register.html'">← Quay Lại</button>
+        <button class="btn btn-primary" onclick="alert('Đã lưu thông tin!')">💾 Lưu Thông Tin</button>
     </div>
 </div>
 </body>

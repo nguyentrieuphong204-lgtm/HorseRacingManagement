@@ -5,8 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spectator Registration - Horse Racing System</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         :root {
-            --primary-bg: #ffffff;
+            --primary-bg: #f4fbf9;
             --secondary-bg: #f0f9f7;
             --card-bg: #ffffff;
             --border-color: #10b981;
@@ -19,36 +25,150 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--primary-bg);
+            background: linear-gradient(135deg, #f4fbf9 0%, #e6f7f2 100%);
             color: var(--text-primary);
             line-height: 1.6;
             min-height: 100vh;
-            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .form-container {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.15);
+        }
+
+        .form-container h2 {
+            font-size: 28px;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #065f46, #10b981);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-align: center;
+        }
+
+        .form-container > p {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--secondary-bg);
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            transition: all var(--transition);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-green);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+            background: white;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all var(--transition);
+        }
+
+        .btn-primary {
+            background: var(--accent-green);
+            color: white;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-dark-green);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-dark-green);
+            background: var(--secondary-bg);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 24px;
+            }
+            .button-group {
+                flex-direction: column;
+            }
+            .btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="form-container">
+        <h2>Đăng Ký Thành Viên</h2>
+        
+        <div class="form-group">
+            <label class="form-label">Tên đăng nhập</label>
+            <input type="text" class="form-input">
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label">Mật khẩu</label>
+            <input type="password" class="form-input" >
+        </div>
 
-<div class="form-container">
-    <h2>Đăng Ký Thành Viên (Khán Giả)</h2>
-    <p style="color: var(--text-secondary); margin-bottom: 20px;">Trở thành thành viên để cập nhật lịch đua và đặt vé trực tuyến.</p>
-    
-    <div class="form-group">
-        <label class="form-label">Username</label>
-        <input type="text" class="form-input">
-    </div>
-    
-    <div class="form-group">
-        <label class="form-label">mật khẩu</label>
-        <input type="tel" class="form-input">
-    </div>
+        <div class="form-group">
+            <label class="form-label">Nhập Lại Mật Khẩu</label>
+            <input type="password" class="form-input">
+        </div>
 
-    <div class="form-group">
-        <label class="form-label">Nhập Lại Mật Khẩu</label>
-        <input type="tel" class="form-input">
+        <div class="button-group">
+            <button class="btn btn-secondary" onclick="window.location.href='register.html'">← Quay Lại</button>
+            <button class="btn btn-primary" onclick="alert('Đăng ký thành công!')">Hoàn Tất Đăng Ký</button>
+        </div>
     </div>
-    <button class="btn-primary">Hoàn Tất Đăng Ký</button>
-</div>
-
 </body>
 </html>
