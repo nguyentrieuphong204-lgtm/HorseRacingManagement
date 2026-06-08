@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
@@ -306,51 +306,49 @@
 <div class="container">
     <div class="header">
         <div class="header-content">
-            <h1>🏇 Quản Lý Jockey</h1>
-            <p>Cập nhật thông tin, kinh nghiệm và tài liệu chuyên nghiệp</p>
+            <h1>Jockey Management</h1>
         </div>
-        <div class="header-avatar">🏇</div>
     </div>
 
     <div class="card">
         <div class="card-header">
-            <h2>👤 Thông Tin Cá Nhân</h2>
-            <button class="btn btn-secondary btn-sm">Chỉnh Sửa</button>
+            <h2>👤 Personal Information</h2>
+            <button class="btn btn-secondary btn-sm">Edit</button>
         </div>
         <div class="card-body">
             <div class="form-row">
                 <div class="form-group">
-                    <label class="form-label">Họ Tên <span class="required">*</span></label>
+                    <label class="form-label">Full Name <span class="required"></span></label>
                     <input type="text" class="form-input">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label class="form-label">Ngày Sinh <span class="required">*</span></label>
+                    <label class="form-label">Date of Birth <span class="required"></span></label>
                     <input type="date" class="form-input">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Quốc Tịch <span class="required">*</span></label>
+                    <label class="form-label">Nationality <span class="required"></span></label>
                     <input type="text" class="form-input">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label class="form-label">Chiều Cao (cm)</label>
+                    <label class="form-label">Height (cm)</label>
                     <input type="number" step="0.1" class="form-input">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Cân Nặng (kg) <span class="required">*</span></label>
+                    <label class="form-label">Weight<span class="required"></span></label>
                     <input type="number" step="0.1" class="form-input">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label class="form-label">Email <span class="required">*</span></label>
+                    <label class="form-label">Email <span class="required"></span></label>
                     <input type="email" class="form-input">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Số Điện Thoại <span class="required">*</span></label>
+                    <label class="form-label">Phone Number <span class="required"></span></label>
                     <input type="tel" class="form-input">
                 </div>
             </div>
@@ -359,60 +357,60 @@
 
     <div class="card">
         <div class="card-header">
-            <h2>💼 Thông Tin Chuyên Nghiệp</h2>
+            <h2>💼 Professional Information</h2>
         </div>
         <div class="card-body">
             <div class="form-row">
                 <div class="form-group">
-                    <label class="form-label">Kinh Nghiệm (năm) <span class="required">*</span></label>
-                    <input type="number" step="1" class="form-input" placeholder="5">
+                    <label class="form-label">Experience (years) <span class="required"></span></label>
+                    <input type="number" step="1" class="form-input">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Số Áo Đua</label>
-                    <input type="text" class="form-input" placeholder="#07">
+                    <label class="form-label">Racing Number</label>
+                    <input type="text" class="form-input">
                 </div>
             </div>
             <div class="form-group">
-                <label class="form-label">Các Giải Thưởng Chính</label>
-                <textarea class="form-input" rows="2" placeholder="Vô địch Derby 2022, Cúp Ngựa Vàng 2023..."></textarea>
+                <label class="form-label">Major Awards</label>
+                <textarea class="form-input" rows="2"></textarea>
             </div>
             <div class="form-group">
-                <label class="form-label">Mô Tả Tiểu Sử</label>
-                <textarea class="form-input" rows="3" placeholder="Thông tin thêm về quá trình thi đấu, thành tích nổi bật..."></textarea>
+                <label class="form-label">Biography</label>
+                <textarea class="form-input" rows="3"></textarea>
             </div>
         </div>
     </div>
 
     <div class="card">
         <div class="card-header">
-            <h2>📄 Giấy Chứng Chỉ & Tài Liệu</h2>
-            <button class="btn btn-secondary btn-sm">+ Tải lên</button>
+            <h2>📄 Certificates & Documents</h2>
+            <button class="btn btn-secondary btn-sm">+ Upload</button>
         </div>
         <div class="card-body">
             <div class="table-wrapper">
                 <table class="table">
                     <thead>
-                        <tr><th>Loại Tài Liệu</th><th>Ngày Cấp</th><th>Hết Hạn</th><th>Trạng Thái</th><th>Hành Động</th></tr>
+                        <tr><th>Document Type</th><th>Issue Date</th><th>Expiry Date</th><th>Status</th><th>Actions</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>🎓 Chứng Chỉ Jockey</td><td>15/03/2020</td><td>15/03/2025</td><td><span class="badge badge-valid">Hợp Lệ</span></td><td class="action-buttons"><button class="btn btn-secondary btn-sm">Xem</button><button class="btn btn-secondary btn-sm">Xóa</button></td></tr>
-                        <tr><td>🏥 Khám Sức Khỏe</td><td>01/06/2024</td><td>01/06/2025</td><td><span class="badge badge-valid">Hợp Lệ</span></td><td class="action-buttons"><button class="btn btn-secondary btn-sm">Xem</button><button class="btn btn-secondary btn-sm">Xóa</button></td></tr>
-                        <tr><td>📋 Bảo Hiểm Chuyên Nghiệp</td><td>01/01/2024</td><td>31/12/2024</td><td><span class="badge badge-expiring">Sắp Hết Hạn</span></td><td class="action-buttons"><button class="btn btn-secondary btn-sm">Xem</button><button class="btn btn-secondary btn-sm">Xóa</button></td></tr>
+                        <tr><td>🎓 Jockey License</td><td>15/03/2020</td><td>15/03/2025</td><td><span class="badge badge-valid">Valid</span></td><td class="action-buttons"><button class="btn btn-secondary btn-sm">View</button><button class="btn btn-secondary btn-sm">Delete</button></td></tr>
+                        <tr><td>🏥 Health Certificate</td><td>01/06/2024</td><td>01/06/2025</td><td><span class="badge badge-valid">Valid</span></td><td class="action-buttons"><button class="btn btn-secondary btn-sm">View</button><button class="btn btn-secondary btn-sm">Delete</button></td></tr>
+                        <tr><td>📋 Professional Insurance</td><td>01/01/2024</td><td>31/12/2024</td><td><span class="badge badge-expiring">Expiring Soon</span></td><td class="action-buttons"><button class="btn btn-secondary btn-sm">View</button><button class="btn btn-secondary btn-sm">Delete</button></td></tr>
                     </tbody>
                 </table>
             </div>
             <div class="file-upload" style="margin-top: 24px;">
                 <div class="file-upload-icon"></div>
-                <p>Kéo thả hoặc click để tải lên giấy tờ</p>
+                <p>Drag & drop or click to upload documents</p>
+                <p style="font-size: 12px; color: #999;">Supports: PDF, JPG, PNG (Max 5MB)</p>
                 <input type="file" accept=".pdf,.jpg,.png">
             </div>
         </div>
     </div>
 
-    <!-- Nút Quay lại và Lưu -->
     <div class="button-group" style="justify-content: space-between; margin-top: 8px; margin-bottom: 16px;">
-        <button class="btn btn-secondary" onclick="window.location.href='register.html'">← Quay Lại</button>
-        <button class="btn btn-primary" onclick="alert('Đã lưu thông tin!')">Lưu Thông Tin</button>
+        <button class="btn btn-secondary" onclick="window.location.href='register.html'">← Back</button>
+        <button class="btn btn-primary" onclick="alert('Information saved successfully!')">Save Information</button>
     </div>
 </div>
 </body>

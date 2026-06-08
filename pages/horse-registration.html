@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -172,6 +172,32 @@
             transform: translateY(-2px);
         }
 
+        .file-upload {
+            margin-top: 24px;
+            padding: 30px;
+            border: 2px dashed var(--border-color);
+            border-radius: 16px;
+            text-align: center;
+            background: var(--secondary-bg);
+            transition: all var(--transition);
+            cursor: pointer;
+        }
+
+        .file-upload:hover {
+            border-color: var(--accent-dark-green);
+            background: #e8f5f0;
+        }
+
+        .file-upload p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin: 10px 0;
+        }
+
+        .file-upload input {
+            display: none;
+        }
+
         @media (max-width: 768px) {
             .card {
                 padding: 24px;
@@ -193,50 +219,109 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Đăng Ký Ngựa Đua</h1>
+            <h1>Horse Registration</h1>
         </div>
 
         <div class="card">
-            <div class="card-title">📋 Thông Tin Đăng Ký</div>
+            <div class="card-title">📋 Registration Information</div>
 
             <div class="form-section">
                 <div class="section-title">
-                    <span>👤</span> Thông Tin Chủ Sở Hữu
+                    <span>👤</span> Owner Information
                 </div>
                 
                 <div class="form-grid-2">
                     <div class="form-group">
-                        <label class="form-label">Họ Tên <span class="required">*</span></label>
+                        <label class="form-label">Full Name <span class="required"></span></label>
                         <input type="text" class="form-input">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Email <span class="required">*</span></label>
+                        <label class="form-label">Email <span class="required"></span></label>
                         <input type="email" class="form-input">
                     </div>
                 </div>
 
                 <div class="form-grid-2">
                     <div class="form-group">
-                        <label class="form-label">Số Điện Thoại <span class="required">*</span></label>
+                        <label class="form-label">Phone Number <span class="required"></span></label>
                         <input type="tel" class="form-input">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Địa Chỉ</label>
+                        <label class="form-label">Address</label>
                         <input type="text" class="form-input">
                     </div>
                 </div>
             </div>
-            <div class="file-upload" style="margin-top: 24px;">
-                <div class="file-upload-icon"></div>
-                <p>Kéo thả hoặc click để tải lên giấy tờ</p>
-                <input type="file" accept=".pdf,.jpg,.png">
+
+            <div class="form-section">
+                <div class="section-title">
+                    <span>🐴</span> Horse Information
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label class="form-label">Horse Name <span class="required"></span></label>
+                        <input type="text" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Breed <span class="required"></span></label>
+                        <input type="text" class="form-input">
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label class="form-label">Age <span class="required"></span></label>
+                        <input type="number" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Gender <span class="required"></span></label>
+                        <select class="form-input">
+                            <option value="">Select gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label class="form-label">Color <span class="required"></span></label>
+                        <input type="text" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Weight (kg)</label>
+                        <input type="number" class="form-input">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Description / Notes</label>
+                    <textarea class="form-input" rows="3"></textarea>
+                </div>
+            </div>
+
+            <div class="file-upload" onclick="document.getElementById('fileInput').click()">
+                <div class="file-upload-icon">📎</div>
+                <p>Drag & drop or click to upload documents</p>
+                <p style="font-size: 12px; color: #999;">Supports: PDF, JPG, PNG (Max 5MB)</p>
+                <input type="file" id="fileInput" accept=".pdf,.jpg,.png">
             </div>
         </div>
-            <div class="button-group">
-                <button class="btn btn-secondary" onclick="window.location.href='register.html'">← Quay Lại</button>
-                <button class="btn btn-primary" onclick="alert('Chức năng đang được phát triển!')">Tiếp Tục →</button>
-            </div>
+
+        <div class="button-group">
+            <button class="btn btn-secondary" onclick="window.location.href='register.html'">← Back</button>
+            <button class="btn btn-primary" onclick="alert('This feature is currently under development!')">Continue →</button>
         </div>
     </div>
+
+    <script>
+        // Optional: Add file upload preview or validation logic here
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                alert('File selected: ' + e.target.files[0].name);
+            }
+        });
+    </script>
 </body>
 </html>

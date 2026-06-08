@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -193,21 +193,19 @@
         }
 
         /* ============== SIDEBAR ============== */
-/* 1. Sửa Sidebar: Tăng padding để menu không bị đè lên vùng header */
-.sidebar {
-    position: fixed;
-    left: 0;
-    top: 0; 
-    width: 280px;
-    height: 100vh;
-    background: var(--secondary-bg);
-    border-right: 2px solid var(--border-color);
-    padding-top: 80px; /* Tăng padding này lên để đẩy nội dung Sidebar xuống dưới khu vực logo */
-    transform: translateX(-100%);
-    transition: transform var(--transition);
-    z-index: 100;
-}
-
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0; 
+            width: 280px;
+            height: 100vh;
+            background: var(--secondary-bg);
+            border-right: 2px solid var(--border-color);
+            padding-top: 80px;
+            transform: translateX(-100%);
+            transition: transform var(--transition);
+            z-index: 100;
+        }
 
         .sidebar.active {
             transform: translateX(0);
@@ -575,26 +573,27 @@
             color: var(--text-secondary);
         }
 
-/* ============== OVERLAY ============== */
+        /* ============== OVERLAY ============== */
         .overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.4); /* Màu tối */
-    z-index: 99; /* Nằm trên Navbar (98) nhưng dưới Sidebar (100) */
-    opacity: 0;
-    visibility: hidden;
-    transition: all var(--transition);
-}
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 99;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition);
+        }
 
-.overlay.active {
-    display: block;
-    opacity: 1;
-    visibility: visible;
-}
+        .overlay.active {
+            display: block;
+            opacity: 1;
+            visibility: visible;
+        }
+
         /* ============== RESPONSIVE ============== */
         @media (max-width: 768px) {
             .navbar {
@@ -623,15 +622,15 @@
                 font-size: 24px;
             }
         }
-/* Hiệu ứng làm mờ khu vực 3 nút ở giữa */
-.navbar-center {
-    transition: opacity var(--transition);
-}
 
-.navbar-center.shadowed {
-    opacity: 0.2; /* Làm mờ nút giống hiệu ứng bóng che */
-    pointer-events: none; /* Khóa không cho bấm vào nút khi đang mờ */
-}
+        .navbar-center {
+            transition: opacity var(--transition);
+        }
+
+        .navbar-center.shadowed {
+            opacity: 0.2;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
@@ -647,21 +646,21 @@
         </div>
 
         <div class="navbar-center">
-            <button class="nav-button" onclick="showPage('races')">📅 Lịch Đua</button>
-            <button class="nav-button" onclick="showPage('predictions')">🔮 Dự Đoán</button>
-            <button class="nav-button" onclick="showPage('payment')">💰 Nạp Tiền</button>
+            <button class="nav-button" onclick="showPage('races')">📅 Race Schedule</button>
+            <button class="nav-button" onclick="showPage('predictions')">🔮 Predictions</button>
+            <button class="nav-button" onclick="showPage('payment')">💰 Deposit</button>
         </div>
 
         <div class="navbar-right">
-        <div class="nav-buttons"></div>
+            <div class="nav-buttons"></div>
             <div class="account-dropdown" onclick="toggleAccountDropdown(event)">
                 <button class="account-btn">👤</button>
                 <div class="account-menu">
                     <div class="account-menu-item" onclick="openLoginModal()">
-                        🔐 Đăng Nhập
+                        🔐 Login
                     </div>
                     <div class="account-menu-item" onclick="openSignupModal()">
-                        ✍️ Đăng Ký
+                        ✍️ Register
                     </div>
                 </div>
             </div>
@@ -676,27 +675,27 @@
         <div class="sidebar-menu">
             <div class="menu-item" onclick="showPageAndCloseSidebar('horses')">
                 <span class="menu-item-icon">🐴</span>
-                <span>Danh Sách Ngựa</span>
+                <span>Horse List</span>
             </div>
             <div class="menu-item" onclick="showPageAndCloseSidebar('races')">
                 <span class="menu-item-icon">📅</span>
-                <span>Lịch Đua</span>
+                <span>Race Schedule</span>
             </div>
             <div class="menu-item" onclick="showPageAndCloseSidebar('predictions')">
                 <span class="menu-item-icon">🔮</span>
-                <span>Dự Đoán</span>
+                <span>Predictions</span>
             </div>
             <div class="menu-item" onclick="showPageAndCloseSidebar('payment')">
                 <span class="menu-item-icon">💰</span>
-                <span>Nạp Tiền</span>
+                <span>Deposit</span>
             </div>
             <div class="menu-item" onclick="showPageAndCloseSidebar('results')">
                 <span class="menu-item-icon">🏆</span>
-                <span>Kết Quả</span>
+                <span>Results</span>
             </div>
             <div class="menu-item" onclick="window.location.href='news.html'">
                 <span class="menu-item-icon">📰</span>
-                <span>Tin Tức</span>
+                <span>News</span>
             </div>
         </div>
     </div>
@@ -705,25 +704,11 @@
     <div class="main-content" id="mainContent">
         <!-- HOME PAGE -->
         <div id="home-page" class="page active">
-
             <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-label">Tổng Ngựa</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Ngựa Hoạt Động</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Cuộc Đua Sắp Tới</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Số Dư Tài Khoản</div>
-                </div>
-            </div>
 
             <div class="horse-list">
                 <div class="list-header">
-                    <div class="list-title">📋 Danh Sách Ngựa Đã Đăng Ký</div>
+                    <div class="list-title">📋 Registered Horses</div>
                 </div>
                 <div id="horsesContainer"></div>
             </div>
@@ -732,14 +717,14 @@
         <!-- HORSES PAGE -->
         <div id="horses-page" class="page">
             <div class="content-header">
-                <div class="page-title">Quản Lý Ngựa</div>
+                <div class="page-title">Horse Management</div>
                 <div class="header-actions">
-                    <button class="btn-primary" onclick="openRegisterHorseModal()">➕ Đăng Ký Ngựa</button>
+                    <button class="btn-primary" onclick="openRegisterHorseModal()">➕ Register Horse</button>
                 </div>
             </div>
             <div class="horse-list">
                 <div class="list-header">
-                    <div class="list-title">Tất Cả Ngựa</div>
+                    <div class="list-title">All Horses</div>
                 </div>
                 <div id="allHorsesContainer"></div>
             </div>
@@ -748,7 +733,7 @@
         <!-- RACES PAGE -->
         <div id="races-page" class="page">
             <div class="content-header">
-                <div class="page-title">📅 Lịch Đua</div>
+                <div class="page-title">📅 Race Schedule</div>
             </div>
             <div id="racesContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;"></div>
         </div>
@@ -756,122 +741,119 @@
         <!-- PREDICTIONS PAGE -->
         <div id="predictions-page" class="page">
             <div class="content-header">
-                <div class="page-title">🔮 Dự Đoán Kết Quả</div>
+                <div class="page-title">🔮 Race Predictions</div>
             </div>
             <div id="predictionsContainer" style="background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 12px; padding: 30px; text-align: center;">
-                <p style="color: var(--text-secondary); font-size: 16px;">Chọn cuộc đua để dự đoán kết quả</p>
+                <p style="color: var(--text-secondary); font-size: 16px;">Select a race to make predictions</p>
             </div>
         </div>
 
         <!-- PAYMENT PAGE -->
         <div id="payment-page" class="page">
             <div class="content-header">
-                <div class="page-title">💰 Nạp Tiền</div>
+                <div class="page-title">💰 Deposit</div>
             </div>
             <div style="background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 12px; padding: 40px; max-width: 600px; margin: 0 auto;">
                 <div style="margin-bottom: 30px;">
-                    <label class="form-label">Số Tiền Nạp</label>
-                    <input type="number" class="form-input" id="amountInput">
+                    <label class="form-label">Deposit Amount</label>
+                    <input type="number" class="form-input" id="amountInput" placeholder="Enter amount">
                 </div>
                 <div style="margin-bottom: 30px;">
-                    <label class="form-label">Phương Thức Thanh Toán</label>
+                    <label class="form-label">Payment Method</label>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                         <div class="payment-method" onclick="selectPaymentMethod('vnpay')">
                             <div class="payment-method-icon">🏦</div>
                             <div class="payment-method-title">VN Pay</div>
-                            <div class="payment-method-desc">Thanh toán qua ví điện tử</div>
+                            <div class="payment-method-desc">E-wallet payment</div>
                         </div>
                         <div class="payment-method" onclick="selectPaymentMethod('bank')">
                             <div class="payment-method-icon">🏧</div>
-                            <div class="payment-method-title">Chuyển Khoản</div>
-                            <div class="payment-method-desc">Chuyển khoản ngân hàng</div>
+                            <div class="payment-method-title">Bank Transfer</div>
+                            <div class="payment-method-desc">Bank transfer payment</div>
                         </div>
                     </div>
                 </div>
-                <button class="btn-primary" onclick="processPayment()" style="width: 100%;">Tiếp Tục Thanh Toán</button>
+                <button class="btn-primary" onclick="processPayment()" style="width: 100%;">Continue to Payment</button>
             </div>
         </div>
 
         <!-- RESULTS PAGE -->
         <div id="results-page" class="page">
             <div class="content-header">
-                <div class="page-title">🏆 Kết Quả Cuộc Đua</div>
+                <div class="page-title">🏆 Race Results</div>
             </div>
             <div style="background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 12px; padding: 30px; text-align: center;">
-                <p style="color: var(--text-secondary); font-size: 16px;">Chưa có kết quả cuộc đua nào</p>
+                <p style="color: var(--text-secondary); font-size: 16px;">No race results available</p>
             </div>
         </div>
     </div>
 
-    <!-- LOGIN MODAL (Thêm mới đoạn này) -->
+    <!-- LOGIN MODAL -->
     <div class="modal" id="loginModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeLoginModal()">✕</button>
-
-            <div class="modal-title">Đăng Nhập</div>
+            <div class="modal-title">Login</div>
             
             <div class="form-group">
-                <label class="form-label">Tên đăng nhập</label>
-                <input type="text" class="form-input" id="login-username" placeholder="Nhập tên đăng nhập...">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-input" id="login-username" placeholder="Enter username...">
             </div>
             
             <div class="form-group">
-                <label class="form-label">Mật khẩu</label>
-                <input type="password" class="form-input" id="login-password" placeholder="Nhập mật khẩu...">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-input" id="login-password" placeholder="Enter password...">
             </div>
 
-            <button class="form-button" onclick="handleLogin()">✓ Đăng Nhập</button>
+            <button class="form-button" onclick="handleLogin()">✓ Login</button>
 
             <div class="form-link" style="text-align: center; margin-top: 15px; cursor: pointer;">
-                <strong><a onclick="switchToSignup()" style="color: var(--accent-green); text-decoration: underline;">Chưa có tài khoản? Đăng ký ngay</a></strong>
+                <strong><a onclick="switchToSignup()" style="color: var(--accent-green); text-decoration: underline;">Don't have an account? Register now</a></strong>
             </div>
         </div>
     </div>
-    <!-- REGISTER HORSE MODAL -->
+
+    <!-- SIGNUP MODAL -->
     <div class="modal" id="signupModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeSignupModal()">✕</button>
-
-            <div class="modal-title">Đăng Ký</div>
-
-            <button class="form-button" onclick="window.location.href='register.html'">✓ Tạo Tài Khoản</button>
-
-        <div class="form-link" style="text-align: center; margin-top: 15px; cursor: pointer;">
-        <strong><a onclick="switchToLogin()" style="color: var(--accent-green); text-decoration: underline;">Bạn đã có tài khoản? Đăng nhập</a></strong>
-        </div>
+            <div class="modal-title">Register</div>
+            <button class="form-button" onclick="window.location.href='register.html'">✓ Create Account</button>
+            <div class="form-link" style="text-align: center; margin-top: 15px; cursor: pointer;">
+                <strong><a onclick="switchToLogin()" style="color: var(--accent-green); text-decoration: underline;">Already have an account? Login</a></strong>
+            </div>
         </div>
     </div>
 
     <script>
         // Sample horses data
         const horses = [
-            { id: 1, name: 'Lightning Thunder', breed: 'Thoroughbred', age: 4, gender: 'Đực', color: 'Nâu đỏ', status: 'active' },
-            { id: 2, name: 'Golden Star', breed: 'Quarter Horse', age: 3, gender: 'Cái', color: 'Vàng', status: 'active' },
-            { id: 3, name: 'Black Diamond', breed: 'Thoroughbred', age: 5, gender: 'Đực', color: 'Đen', status: 'active' },
-            { id: 4, name: 'White Phoenix', breed: 'Arabian', age: 6, gender: 'Cái', color: 'Trắng', status: 'active' },
-            { id: 5, name: 'Storm Runner', breed: 'Thoroughbred', age: 7, gender: 'Đực', color: 'Xám', status: 'active' },
+            { id: 1, name: 'Lightning Thunder', breed: 'Thoroughbred', age: 4, gender: 'Male', color: 'Red Brown', status: 'active' },
+            { id: 2, name: 'Golden Star', breed: 'Quarter Horse', age: 3, gender: 'Female', color: 'Gold', status: 'active' },
+            { id: 3, name: 'Black Diamond', breed: 'Thoroughbred', age: 5, gender: 'Male', color: 'Black', status: 'active' },
+            { id: 4, name: 'White Phoenix', breed: 'Arabian', age: 6, gender: 'Female', color: 'White', status: 'active' },
+            { id: 5, name: 'Storm Runner', breed: 'Thoroughbred', age: 7, gender: 'Male', color: 'Gray', status: 'active' },
         ];
 
         // Toggle sidebar
         function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('overlay');
-    const menuIcon = document.getElementById('menuIcon');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            const menuIcon = document.getElementById('menuIcon');
 
-    sidebar.classList.toggle('active');
-    overlay.classList.toggle('active');
-    menuIcon.classList.toggle('active');
-}
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+            menuIcon.classList.toggle('active');
+        }
 
-function closeSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('overlay');
-    const menuIcon = document.getElementById('menuIcon');
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            const menuIcon = document.getElementById('menuIcon');
 
-    sidebar.classList.remove('active');
-    overlay.classList.remove('active');
-    menuIcon.classList.remove('active');
-}
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+            menuIcon.classList.remove('active');
+        }
 
         // Show page
         function showPage(pageName) {
@@ -900,21 +882,21 @@ function closeSidebar() {
                     <div class="horse-item">
                         <div class="horse-info">
                             <div class="horse-name">🐴 ${horse.name}</div>
-                            <div class="horse-details">${horse.breed} • Tuổi: ${horse.age} • ${horse.gender} • Màu: ${horse.color}</div>
+                            <div class="horse-details">${horse.breed} • Age: ${horse.age} • ${horse.gender} • Color: ${horse.color}</div>
                         </div>
                         <div>
-                            <span class="horse-status">✓ Hoạt Động</span>
+                            <span class="horse-status">✓ Active</span>
                         </div>
                         <div class="horse-actions">
-                            <button class="btn-small" onclick="alert('Chỉnh sửa ${horse.name}')">Sửa</button>
-                            <button class="btn-small" onclick="alert('Chi tiết ${horse.name}')">Chi Tiết</button>
+                            <button class="btn-small" onclick="alert('Edit ${horse.name}')">Edit</button>
+                            <button class="btn-small" onclick="alert('Details ${horse.name}')">Details</button>
                         </div>
                     </div>
                 `).join('');
             });
         }
 
-                // Toggle account dropdown
+        // Toggle account dropdown
         function toggleAccountDropdown(event) {
             event.stopPropagation();
             document.querySelectorAll('.account-dropdown').forEach(d => {
@@ -962,28 +944,37 @@ function closeSidebar() {
             const username = document.getElementById('login-username').value;
             const password = document.getElementById('login-password').value;
             if (!username || !password) {
-                alert('Vui lòng nhập đầy đủ thông tin!');
+                alert('Please enter all information!');
                 return;
             }
-            alert('✓ Đăng nhập thành công!');
+            alert('✓ Login successful!');
             closeLoginModal();
         }
 
-        function selectSignupRole(el, role) {
-            document.querySelectorAll('.role-option').forEach(item => item.classList.remove('selected'));
-            el.classList.add('selected');
-            document.getElementById('signup-role').value = role;
+        function openRegisterHorseModal() {
+            alert('Register Horse feature coming soon!');
         }
 
-        function handleSignup() {
-            const role = document.getElementById('signup-role').value;
-            if (!role) {
-                alert('Vui lòng chọn vai trò!');
+        let selectedPaymentMethod = null;
+
+        function selectPaymentMethod(method) {
+            selectedPaymentMethod = method;
+            alert(`Selected: ${method === 'vnpay' ? 'VN Pay' : 'Bank Transfer'}`);
+        }
+
+        function processPayment() {
+            const amount = document.getElementById('amountInput').value;
+            if (!amount || amount <= 0) {
+                alert('Please enter a valid amount!');
                 return;
             }
-            alert('✓ Đăng ký thành công!');
-            closeSignupModal();
+            if (!selectedPaymentMethod) {
+                alert('Please select a payment method!');
+                return;
+            }
+            alert(`Processing payment of $${amount} via ${selectedPaymentMethod === 'vnpay' ? 'VN Pay' : 'Bank Transfer'}`);
         }
+
         // Initialize
         window.addEventListener('load', loadHorses);
     </script>
