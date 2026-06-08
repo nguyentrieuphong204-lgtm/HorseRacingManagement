@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horse Racing Management System - Owner Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-bg: #ffffff;
+            --secondary-bg: #f0f9f7;
+            --card-bg: #ffffff;
+            --border-color: #10b981;
+            --accent-green: #10b981;
+            --accent-dark-green: #059669;
+            --text-primary: #065f46;
+            --text-secondary: #047857;
+            --transition: 0.3s ease-in-out;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color var(--transition), color var(--transition);
+        }
+
+        body.light-mode {
+            --primary-bg: #f8f9fa;
+            --secondary-bg: #e9ecef;
+            --card-bg: #ffffff;
+            --border-color: #dee2e6;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+        }
+
+        /* ============== NAVBAR ============== */
+        .navbar {
+            background: var(--secondary-bg);
+            border-bottom: 2px solid var(--accent-green);
+            padding: 12px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
+        }
+
+        body.light-mode .navbar {
+            background: rgba(248, 249, 250, 0.95);
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            flex: 1;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent-blue);
+        }
+
+        .clock {
+            font-size: 14px;
+            color: var(--text-secondary);
+            min-width: 120px;
+        }
+
+        .navbar-center {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-button {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all var(--transition);
+            white-space: nowrap;
+        }
+
+        .nav-button:hover {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .navbar-right {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        /* ============== MENU ICON ============== */
+        .menu-icon {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .menu-icon span {
+            width: 100%;
+            height: 2px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: all var(--transition);
+        }
+
+        .menu-icon.active span:nth-child(1) {
+            transform: rotate(45deg) translateY(12px);
+        }
+
+        .menu-icon.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-icon.active span:nth-child(3) {
+            transform: rotate(-45deg) translateY(-12px);
+        }
+
+        /* ============== SIDEBAR MENU ============== */
+        .sidebar-menu {
+            position: fixed;
+            left: 0;
+            top: 70px;
+            width: 280px;
+            height: calc(100vh - 70px);
+            background: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            transform: translateX(-100%);
+            transition: transform var(--transition);
+            z-index: 99;
+            overflow-y: auto;
+        }
+
+        .sidebar-menu.active {
+            transform: translateX(0);
+        }
+
+        .menu-item {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-primary);
+        }
+
+        .menu-item:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 3px solid var(--accent-blue);
+            padding-left: 17px;
+        }
+
+        .menu-item-icon {
+            font-size: 20px;
+            min-width: 20px;
+        }
+
+        /* ============== SETTINGS DROPDOWN ============== */
+        .settings-dropdown {
+            position: relative;
+        }
+
+        .settings-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 6px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .settings-btn:hover {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .settings-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            min-width: 220px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all var(--transition);
+            z-index: 1001;
+        }
+
+        .settings-dropdown.active .settings-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .settings-item {
+            padding: 12px 16px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all var(--transition);
+            cursor: pointer;
+            font-size: 14px;
+            border-left: 3px solid transparent;
+        }
+
+        .settings-item:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-left-color: var(--accent-blue);
+            padding-left: 20px;
+        }
+
+        .settings-item.separator {
+            border-top: 1px solid var(--border-color);
+            padding: 0;
+            height: 1px;
+            cursor: default;
+        }
+
+        .settings-item.separator:hover {
+            background: none;
+            border-left: none;
+            padding: 0;
+        }
+
+        /* ============== ACCOUNT DROPDOWN ============== */
+        .account-dropdown {
+            position: relative;
+        }
+
+        .account-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .account-btn:hover {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .account-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            min-width: 200px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all var(--transition);
+            z-index: 1001;
+        }
+
+        .account-dropdown.active .account-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .account-menu-item {
+            padding: 12px 16px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all var(--transition);
+            cursor: pointer;
+            font-size: 14px;
+            border-left: 3px solid transparent;
+        }
+
+        .account-menu-item:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-left-color: var(--accent-blue);
+            padding-left: 20px;
+        }
+
+        .account-menu-item.logout {
+            color: var(--accent-red);
+        }
+
+        /* ============== MAIN CONTENT ============== */
+        .main-content {
+            margin-left: 0;
+            padding: 30px 40px;
+            transition: margin-left var(--transition);
+        }
+
+        .main-content.sidebar-open {
+            margin-left: 280px;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--accent-blue);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-size: 14px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent-blue);
+            border: 1px solid var(--accent-blue);
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-size: 14px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        /* ============== STATS GRID ============== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all var(--transition);
+        }
+
+        .stat-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-4px);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--accent-blue);
+        }
+
+        /* ============== HORSE LIST ============== */
+        .horse-list {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .list-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .list-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .horse-item {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all var(--transition);
+            cursor: pointer;
+        }
+
+        .horse-item:hover {
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .horse-info {
+            flex: 1;
+        }
+
+        .horse-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .horse-details {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .horse-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+
+        .status-active {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent-green);
+        }
+
+        .status-injured {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--accent-red);
+        }
+
+        .status-retired {
+            background: rgba(156, 163, 175, 0.2);
+            color: #9ca3af;
+        }
+
+        .horse-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            color: var(--text-primary);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .btn-small:hover {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        /* ============== MODAL ============== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease-in-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(40px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            transition: color var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--accent-red);
+        }
+
+        .modal-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: var(--accent-blue);
+        }
+
+        /* ============== FORM ============== */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 12px;
+            background: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            transition: all var(--transition);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all var(--transition);
+            margin-top: 20px;
+        }
+
+        .form-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+        }
+
+        /* ============== RESPONSIVE ============== */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 12px 20px;
+            }
+
+            .navbar-center {
+                display: none;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+            .modal-content {
+                padding: 30px 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <div class="navbar-left">
+            <div class="logo">
+                🐎 HorseRacing
+            </div>
+            <div class="clock" id="clock">12:00:00</div>
+        </div>
+
+        <div class="navbar-center">
+            <button class="nav-button" onclick="showPage('home')">🏠 Trang Chủ</button>
+            <button class="nav-button" onclick="showPage('races')">📅 Lịch Đua</button>
+            <button class="nav-button" onclick="showPage('predictions')">🔮 Dự Đoán</button>
+            <button class="nav-button" onclick="navigateTo('news.html')">📰 Tin Tức</button>
+            <button class="nav-button" onclick="showPage('payment')">💰 Nạp Tiền</button>
+        </div>
+
+        <div class="navbar-right">
+            <!-- MENU ICON -->
+            <div class="menu-icon" id="menuIcon" onclick="toggleSidebar()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <!-- SETTINGS -->
+            <div class="settings-dropdown" onclick="toggleSettings(event)">
+                <button class="settings-btn">⚙️</button>
+                <div class="settings-menu">
+                    <div class="settings-item" onclick="toggleDarkMode()">
+                        🌓 <span id="themeLabel">Chế độ tối</span>
+                    </div>
+                    <div class="settings-item separator"></div>
+                    <div class="settings-item" onclick="changeLanguage('vi')">
+                        🇻🇳 Tiếng Việt
+                    </div>
+                    <div class="settings-item" onclick="changeLanguage('en')">
+                        🇺🇸 English
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACCOUNT -->
+            <div class="account-dropdown" onclick="toggleAccount(event)">
+                <button class="account-btn">👤</button>
+                <div class="account-menu">
+                    <div class="account-menu-item">
+                        <span id="username">Chủ Ngựa 001</span>
+                    </div>
+                    <div class="account-menu-item" onclick="showPage('profile')">
+                        👤 Hồ Sơ
+                    </div>
+                    <div class="account-menu-item" onclick="showPage('notifications')">
+                        🔔 Thông Báo
+                    </div>
+                    <div class="account-menu-item logout" onclick="logout()">
+                        🚪 Đăng Xuất
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SIDEBAR MENU -->
+    <div class="sidebar-menu" id="sidebarMenu">
+        <div class="menu-item" onclick="showPage('home')">
+            <div class="menu-item-icon">🏠</div>
+            <div>Trang Chủ</div>
+        </div>
+        <div class="menu-item" onclick="showPage('horses')">
+            <div class="menu-item-icon">🐴</div>
+            <div>Danh Sách Ngựa</div>
+        </div>
+        <div class="menu-item" onclick="showPage('races')">
+            <div class="menu-item-icon">📅</div>
+            <div>Lịch Đua</div>
+        </div>
+        <div class="menu-item" onclick="showPage('predictions')">
+            <div class="menu-item-icon">🔮</div>
+            <div>Dự Đoán</div>
+        </div>
+        <div class="menu-item" onclick="showPage('payment')">
+            <div class="menu-item-icon">💰</div>
+            <div>Nạp Tiền</div>
+        </div>
+        <div class="menu-item" onclick="showPage('results')">
+            <div class="menu-item-icon">🏆</div>
+            <div>Kết Quả</div>
+        </div>
+        <div class="menu-item" onclick="navigateTo('news.html')">
+            <div class="menu-item-icon">📰</div>
+            <div>Tin Tức</div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content" id="mainContent">
+        <!-- HOME PAGE -->
+        <div id="home-page" class="page active">
+            <div class="content-header">
+                <div class="page-title">Trang Chủ Chủ Ngựa</div>
+                <div class="header-actions">
+                    <button class="btn-primary" onclick="openRegisterHorseModal()">➕ Đăng Ký Thêm Ngựa</button>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Tổng Ngựa</div>
+                    <div class="stat-value" id="totalHorses"></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Ngựa Hoạt Động</div>
+                    <div class="stat-value" id="activeHorses"></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Cuộc Đua Sắp Tới</div>
+                    <div class="stat-value" id="upcomingRaces"></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Số Dư Tài Khoản</div>
+                    <div class="stat-value" id="balance"></div>
+                </div>
+            </div>
+
+            <div class="horse-list">
+                <div class="list-header">
+                    <div class="list-title">📋 Danh Sách Ngựa Đã Đăng Ký</div>
+                </div>
+                <div id="horsesContainer">
+                    <!-- Horses will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- HORSES PAGE -->
+        <div id="horses-page" class="page">
+            <div class="content-header">
+                <div class="page-title">Quản Lý Ngựa</div>
+                <div class="header-actions">
+                    <button class="btn-primary" onclick="openRegisterHorseModal()">➕ Đăng Ký Ngựa</button>
+                </div>
+            </div>
+            <div class="horse-list">
+                <div class="list-header">
+                    <div class="list-title">Tất Cả Ngựa</div>
+                </div>
+                <div id="allHorsesContainer">
+                    <!-- All horses will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- RACES PAGE -->
+        <div id="races-page" class="page">
+            <div class="content-header">
+                <div class="page-title">📅 Lịch Đua</div>
+            </div>
+            <div id="racesContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+                <!-- Races will be loaded here -->
+            </div>
+        </div>
+
+        <!-- PREDICTIONS PAGE -->
+        <div id="predictions-page" class="page">
+            <div class="content-header">
+                <div class="page-title">🔮 Dự Đoán Kết Quả</div>
+            </div>
+            <div id="predictionsContainer">
+                <!-- Predictions will be loaded here -->
+            </div>
+        </div>
+
+        <!-- PAYMENT PAGE -->
+        <div id="payment-page" class="page">
+            <div class="content-header">
+                <div class="page-title">💰 Nạp Tiền</div>
+            </div>
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 40px; max-width: 600px; margin: 0 auto;">
+                <div style="margin-bottom: 30px;">
+                    <label class="form-label">Số Tiền Nạp</label>
+                    <input type="number" class="form-input" id="amountInput">
+                </div>
+                <div style="margin-bottom: 30px;">
+                    <label class="form-label">Phương Thức Thanh Toán</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="payment-method" onclick="selectPaymentMethod('vnpay')">
+                            <div style="font-size: 40px; margin-bottom: 10px;">🏦</div>
+                            <div style="font-weight: 600;">VN Pay</div>
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 5px;">Thanh toán qua ví điện tử</div>
+                        </div>
+                        <div class="payment-method" onclick="selectPaymentMethod('bank')">
+                            <div style="font-size: 40px; margin-bottom: 10px;">🏧</div>
+                            <div style="font-weight: 600;">Chuyển Khoản</div>
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 5px;">Chuyển khoản ngân hàng</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="processPayment()" style="width: 100%;">Tiếp Tục Thanh Toán</button>
+            </div>
+        </div>
+
+        <!-- RESULTS PAGE -->
+        <div id="results-page" class="page">
+            <div class="content-header">
+                <div class="page-title">🏆 Kết Quả Cuộc Đua</div>
+            </div>
+            <div id="resultsContainer">
+                <!-- Results will be loaded here -->
+            </div>
+        </div>
+
+        <!-- PROFILE PAGE -->
+        <div id="profile-page" class="page">
+            <div class="content-header">
+                <div class="page-title">👤 Hồ Sơ Tài Khoản</div>
+            </div>
+            <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 30px; max-width: 600px;">
+                <div class="form-group">
+                    <label class="form-label">Tên Tài Khoản</label>
+                    <input type="text" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Số Điện Thoại</label>
+                    <input type="tel" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Địa Chỉ</label>
+                    <input type="text" class="form-input">
+                </div>
+                <button class="btn-primary" style="width: 100%;">Lưu Thay Đổi</button>
+            </div>
+        </div>
+
+        <!-- NOTIFICATIONS PAGE -->
+        <div id="notifications-page" class="page">
+            <div class="content-header">
+                <div class="page-title">🔔 Thông Báo</div>
+            </div>
+            <div id="notificationsContainer">
+                <!-- Notifications will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- REGISTER HORSE MODAL -->
+    <div class="modal" id="registerHorseModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('registerHorseModal')">✕</button>
+            <div class="modal-title">📝 Đăng Ký Ngựa</div>
+
+            <div class="form-group">
+                <label class="form-label">Tên Ngựa</label>
+                <input type="text" class="form-input" id="horseName" placeholder="Nhập tên ngựa">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Giống Ngựa</label>
+                    <input type="text" class="form-input" id="horseBreed" placeholder="VD: Thoroughbred">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tuổi *</label>
+                    <input type="number" class="form-input" id="horseAge" placeholder="VD: 3" min="1">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Giới Tính *</label>
+                    <select class="form-select" id="horseGender">
+                        <option>-- Chọn Giới Tính --</option>
+                        <option>Đực</option>
+                        <option>Cái</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Màu Sắc</label>
+                    <input type="text" class="form-input" id="horseColor">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Cân Nặng (kg)</label>
+                <input type="number" class="form-input" id="horseWeight" placeholder="VD: 450">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Chiều Cao (cm)</label>
+                <input type="number" class="form-input" id="horseHeight" placeholder="VD: 160">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Giải Thưởng</label>
+                <input type="text" class="form-input" id="horseWinnings" placeholder="VD: 3">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Ghi Chú</label>
+                <textarea class="form-textarea" id="horseNotes" placeholder="Nhập ghi chú"></textarea>
+            </div>
+
+            <button class="form-button" onclick="registerHorse()">✓ Đăng Ký Ngựa</button>
+        </div>
+    </div>
+
+    <script>
+        // Sample data
+        const horses = [
+            { id: 1, name: 'Lightning Thunder', breed: 'Thoroughbred', age: 4, gender: 'Đực', color: 'Nâu đỏ', status: 'active' },
+            { id: 2, name: 'Golden Star', breed: 'Quarter Horse', age: 3, gender: 'Cái', color: 'Vàng', status: 'active' },
+            { id: 3, name: 'Black Diamond', breed: 'Thoroughbred', age: 5, gender: 'Đực', color: 'Đen', status: 'active' },
+            { id: 4, name: 'White Phoenix', breed: 'Arabian', age: 6, gender: 'Cái', color: 'Trắng', status: 'injured' },
+            { id: 5, name: 'Storm Runner', breed: 'Thoroughbred', age: 7, gender: 'Đực', color: 'Xám', status: 'active' },
+        ];
+
+        // Clock function
+        function updateClock() {
+            const clock = document.getElementById('clock');
+            const now = new Date();
+            clock.textContent = now.toLocaleTimeString('vi-VN');
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Toggle sidebar
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebarMenu');
+            const menuIcon = document.getElementById('menuIcon');
+            const mainContent = document.getElementById('mainContent');
+            sidebar.classList.toggle('active');
+            menuIcon.classList.toggle('active');
+            mainContent.classList.toggle('sidebar-open');
+        }
+
+        // Toggle settings
+        function toggleSettings(event) {
+            event.stopPropagation();
+            document.querySelectorAll('.settings-dropdown, .account-dropdown').forEach(el => {
+                if (el !== event.currentTarget) el.classList.remove('active');
+            });
+            event.currentTarget.classList.toggle('active');
+        }
+
+        // Toggle account
+        function toggleAccount(event) {
+            event.stopPropagation();
+            document.querySelectorAll('.settings-dropdown, .account-dropdown').forEach(el => {
+                if (el !== event.currentTarget) el.classList.remove('active');
+            });
+            event.currentTarget.classList.toggle('active');
+        }
+
+        // Close dropdowns on outside click
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.settings-dropdown, .account-dropdown').forEach(el => {
+                el.classList.remove('active');
+            });
+        });
+
+        // Dark mode
+        function toggleDarkMode() {
+            document.body.classList.toggle('light-mode');
+            const themeLabel = document.getElementById('themeLabel');
+            if (document.body.classList.contains('light-mode')) {
+                themeLabel.textContent = 'Chế độ sáng';
+                localStorage.setItem('theme', 'light');
+            } else {
+                themeLabel.textContent = 'Chế độ tối';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Load theme
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            document.getElementById('themeLabel').textContent = 'Chế độ sáng';
+        }
+
+        // Language change
+        function changeLanguage(lang) {
+            localStorage.setItem('language', lang);
+            alert('Ngôn ngữ được cập nhật: ' + (lang === 'vi' ? 'Tiếng Việt' : 'English'));
+        }
+
+        // Show page
+        function showPage(pageName) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            const page = document.getElementById(pageName + '-page');
+            if (page) {
+                page.classList.add('active');
+            }
+            closeSidebar();
+
+            if (pageName === 'home' || pageName === 'horses') {
+                loadHorses();
+            }
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebarMenu').classList.remove('active');
+            document.getElementById('menuIcon').classList.remove('active');
+            document.getElementById('mainContent').classList.remove('sidebar-open');
+        }
+
+        // Load horses
+        function loadHorses() {
+            const container = document.getElementById('horsesContainer') || document.getElementById('allHorsesContainer');
+            container.innerHTML = horses.map(horse => `
+                <div class="horse-item">
+                    <div class="horse-info">
+                        <div class="horse-name">🐴 ${horse.name}</div>
+                        <div class="horse-details">${horse.breed} • Tuổi: ${horse.age} • ${horse.gender} • Màu: ${horse.color}</div>
+                    </div>
+                    <div>
+                        <span class="horse-status status-${horse.status}">
+                            ${horse.status === 'active' ? '✓ Hoạt Động' : horse.status === 'injured' ? '⚠️ Bị Thương' : '🔄 Nghỉ Hưu'}
+                        </span>
+                    </div>
+                    <div class="horse-actions">
+                        <button class="btn-small" onclick="editHorse(${horse.id})">Sửa</button>
+                        <button class="btn-small" onclick="viewHorseDetails(${horse.id})">Chi Tiết</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Register horse modal
+        function openRegisterHorseModal() {
+            document.getElementById('registerHorseModal').classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function registerHorse() {
+            const name = document.getElementById('horseName').value;
+            if (!name) {
+                alert('Vui lòng nhập tên ngựa!');
+                return;
+            }
+            alert('✓ Đã đăng ký ngựa: ' + name);
+            closeModal('registerHorseModal');
+            document.getElementById('registerHorseModal').querySelectorAll('input, textarea').forEach(el => el.value = '');
+        }
+
+        function editHorse(horseId) {
+            alert('Chỉnh sửa ngựa: ' + horses.find(h => h.id === horseId).name);
+        }
+
+        function viewHorseDetails(horseId) {
+            const horse = horses.find(h => h.id === horseId);
+            alert(`Chi tiết ngựa:\n${horse.name}\nGiống: ${horse.breed}\nTuổi: ${horse.age}\nGiới tính: ${horse.gender}`);
+        }
+
+        function logout() {
+            alert('Đã đăng xuất!');
+            window.location.href = 'index.html';
+        }
+
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+
+        function processPayment() {
+            const amount = document.getElementById('amountInput').value;
+            if (!amount) {
+                alert('Vui lòng nhập số tiền!');
+                return;
+            }
+            alert('Đang xử lý thanh toán: ' + amount + ' VNĐ');
+        }
+
+        function selectPaymentMethod(method) {
+            alert('Phương thức thanh toán: ' + (method === 'vnpay' ? 'VN Pay' : 'Chuyển Khoản'));
+        }
+
+        // Add CSS for payment methods
+        const style = document.createElement('style');
+        style.textContent = `
+            .payment-method {
+                background: var(--secondary-bg);
+                border: 2px solid var(--border-color);
+                border-radius: 12px;
+                padding: 20px;
+                text-align: center;
+                cursor: pointer;
+                transition: all var(--transition);
+            }
+            .payment-method:hover {
+                border-color: var(--accent-blue);
+                background: rgba(59, 130, 246, 0.1);
+                transform: translateY(-4px);
+            }
+            .page {
+                display: none;
+            }
+            .page.active {
+                display: block;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize
+        window.addEventListener('load', () => {
+            loadHorses();
+        });
+    </script>
+</body>
+</html>

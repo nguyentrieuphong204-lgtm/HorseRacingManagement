@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng Ký Tài Khoản</title>
+    <style>
+        /* CSS tạo hiệu ứng Tab */
+        body { font-family: sans-serif; background: #f0f9f7; display: flex; justify-content: center; padding: 50px; }
+        .card { background: white; padding: 40px; border-radius: 12px; border: 2px solid #10b981; width: 600px; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .tab-btn { padding: 12px 24px; cursor: pointer; border: 2px solid #10b981; background: white; border-radius: 8px; font-weight: bold; }
+        .tab-btn.active { background: #10b981; color: white; }
+        .form-content { display: none; }
+        .form-content.active { display: block; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Chọn vai trò đăng ký</h2>
+    <div class="tabs">
+        <button class="tab-btn" onclick="window.location.href='horse-registration.html'">Đăng Ký Chủ Ngựa</button>
+        <button class="tab-btn" onclick="window.location.href='Jockey-management.html'">Đăng Ký Jockey</button>
+        <button class="tab-btn" onclick="window.location.href='spectator-registration.html'">Đăng ký thành viên</button>
+    </div>
+
+    <div id="owner-form" class="form-content active">
+        </div>
+
+    <div id="jockey-form" class="form-content">
+        </div>
+    <div id="spectator-form" class="form-content">
+        </div>
+</div>
+
+<script>
+    function showForm(role) {
+        document.querySelectorAll('.form-content').forEach(f => f.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(role + '-form').classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+</script>
+</body>
+</html>

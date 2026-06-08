@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horse Racing Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-bg: #ffffff;
+            --secondary-bg: #f0f9f7;
+            --card-bg: #ffffff;
+            --border-color: #10b981;
+            --accent-green: #10b981;
+            --accent-dark-green: #059669;
+            --text-primary: #065f46;
+            --text-secondary: #047857;
+            --transition: 0.3s ease-in-out;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ============== NAVBAR ============== */
+        .navbar {
+            background: var(--secondary-bg);
+            border-bottom: 2px solid var(--accent-green);
+            padding: 12px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--accent-green);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .logo:hover {
+            color: var(--accent-dark-green);
+            transform: translateY(-2px);
+        }
+
+        .logo-icon {
+            font-size: 28px;
+        }
+
+        /* ============== NAVIGATION DROPDOWNS ============== */
+        .nav-menu {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex: 1;
+        }
+
+        .nav-dropdown {
+            position: relative;
+        }
+
+        .nav-dropdown-btn {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--accent-green);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all var(--transition);
+        }
+
+        .nav-dropdown-btn:hover {
+            background: var(--accent-green);
+            color: white;
+        }
+
+        .nav-dropdown-btn::after {
+            content: '▼';
+            font-size: 8px;
+            transition: transform var(--transition);
+        }
+
+        .nav-dropdown-btn.active::after {
+            transform: rotate(180deg);
+        }
+
+        /* ============== DROPDOWN MENU ============== */
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            background: var(--card-bg);
+            border: 2px solid var(--accent-green);
+            border-radius: 8px;
+            min-width: 280px;
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.15);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all var(--transition);
+            z-index: 1001;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .nav-dropdown.active .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            padding: 12px 16px;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all var(--transition);
+            border-left: 3px solid transparent;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .dropdown-item:hover {
+            background: var(--secondary-bg);
+            border-left-color: var(--accent-green);
+            padding-left: 20px;
+        }
+
+        .dropdown-icon {
+            font-size: 18px;
+            min-width: 20px;
+        }
+
+        .dropdown-text {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .dropdown-title {
+            font-weight: 600;
+            color: var(--accent-green);
+            font-size: 13px;
+        }
+
+        .dropdown-desc {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        /* ============== AUTH BUTTONS ============== */
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn-nav {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all var(--transition);
+        }
+
+        .btn-login {
+            background: transparent;
+            color: var(--accent-green);
+            border: 2px solid var(--accent-green);
+        }
+
+        .btn-login:hover {
+            background: var(--secondary-bg);
+        }
+
+        .btn-signup {
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-dark-green));
+            color: white;
+            border: none;
+        }
+
+        .btn-signup:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+        }
+
+        /* ============== ACCOUNT DROPDOWN ============== */
+        .account-dropdown {
+            position: relative;
+        }
+
+        .account-btn {
+            background: transparent;
+            border: 2px solid var(--accent-green);
+            padding: 8px 12px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .account-btn:hover {
+            background: var(--accent-green);
+            color: white;
+        }
+
+        .account-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: var(--card-bg);
+            border: 2px solid var(--accent-green);
+            border-radius: 8px;
+            min-width: 200px;
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.15);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all var(--transition);
+            z-index: 1001;
+        }
+
+        .account-dropdown.active .account-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .account-menu-item {
+            padding: 12px 16px;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all var(--transition);
+            cursor: pointer;
+            font-size: 14px;
+            border-left: 3px solid transparent;
+        }
+
+        .account-menu-item:hover {
+            background: var(--secondary-bg);
+            border-left-color: var(--accent-green);
+            padding-left: 20px;
+        }
+
+        /* ============== HERO SECTION ============== */
+        .hero {
+            min-height: calc(100vh - 70px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 40px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(5, 150, 105, 0.05));
+        }
+
+        .hero-content {
+            max-width: 900px;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 56px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-dark-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin-bottom: 50px;
+            line-height: 1.6;
+        }
+
+        /* ============== FEATURES GRID ============== */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 2px solid var(--accent-green);
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            transition: all var(--transition);
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent-dark-green);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(16, 185, 129, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .feature-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--accent-green);
+        }
+
+        .feature-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* ============== STATS ============== */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 40px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 2px solid var(--accent-green);
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--accent-green);
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        /* ============== MODAL ============== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 2px solid var(--accent-green);
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 450px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease-in-out;
+            box-shadow: 0 12px 48px rgba(16, 185, 129, 0.2);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(40px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            transition: color var(--transition);
+        }
+
+        .modal-close:hover {
+            color: #ef4444;
+        }
+
+        .modal-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+            color: var(--accent-green);
+        }
+
+        /* ============== FORM ============== */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .form-input,
+        select {
+            width: 100%;
+            padding: 12px;
+            background: var(--secondary-bg);
+            border: 2px solid var(--accent-green);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            transition: all var(--transition);
+        }
+
+        .form-input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--accent-dark-green);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .form-checkbox input {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: var(--accent-green);
+        }
+
+        .form-button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-dark-green));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all var(--transition);
+            margin-top: 8px;
+        }
+
+        .form-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+        }
+
+        /* ============== ROLE SELECTOR ============== */
+        .role-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .role-option {
+            padding: 10px;
+            border: 2px solid var(--accent-green);
+            background: var(--secondary-bg);
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+            transition: all var(--transition);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .role-option:hover {
+            border-color: var(--accent-dark-green);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .role-option.selected {
+            border-color: var(--accent-dark-green);
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent-green);
+        }
+
+        .role-option-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* ============== LINK ============== */
+        .form-link {
+            text-align: center;
+            font-size: 13px;
+            margin-top: 16px;
+        }
+
+        .form-link a {
+            color: var(--accent-green);
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .form-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* ============== FOOTER ============== */
+        .footer {
+            background: var(--secondary-bg);
+            border-top: 2px solid var(--accent-green);
+            padding: 40px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        /* ============== RESPONSIVE ============== */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 12px 20px;
+                flex-wrap: wrap;
+            }
+
+            .nav-menu {
+                flex-wrap: wrap;
+                width: 100%;
+                margin: 12px 0 0 0;
+                order: 3;
+            }
+
+            .nav-dropdown-btn {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+
+            .dropdown-menu {
+                min-width: 240px;
+            }
+
+            .hero-title {
+                font-size: 36px;
+            }
+
+            .hero-subtitle {
+                font-size: 16px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .role-selector {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <div class="navbar-left">
+            <a class="logo" onclick="goHome()">
+                <span class="logo-icon">🐎</span>
+                <span>HorseRacing</span>
+            </a>
+        </div>
+
+        <!-- NAVIGATION DROPDOWNS -->
+        <div class="nav-menu">
+            <!-- RACING DROPDOWN -->
+            <div class="nav-dropdown" onclick="toggleDropdown(event, 'racing')">
+                <button class="nav-dropdown-btn">🏇 Racing</button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" onclick="navigateTo('owner-dashboard.html')">
+                        <div class="dropdown-icon">🐴</div>
+                        <div class="dropdown-text">
+                            <div class="dropdown-title">Horse Owner</div>
+                            <div class="dropdown-desc">Quản Lý Ngựa</div>
+                        </div>
+                    </a>
+                    <a class="dropdown-item" onclick="navigateTo('jockey-dashboard.html')">
+                        <div class="dropdown-icon">🏇</div>
+                        <div class="dropdown-text">
+                            <div class="dropdown-title">Jockey</div>
+                            <div class="dropdown-desc">Quản Lý Jockey</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- NEWS DROPDOWN -->
+            <div class="nav-dropdown" onclick="toggleDropdown(event, 'news')">
+                <button class="nav-dropdown-btn">📰 News</button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" onclick="navigateTo('news.html')">
+                        <div class="dropdown-icon">⭐</div>
+                        <div class="dropdown-text">
+                            <div class="dropdown-title">Latest News</div>
+                            <div class="dropdown-desc">Tin Tức Mới Nhất</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ABOUT DROPDOWN -->
+            <div class="nav-dropdown" onclick="toggleDropdown(event, 'about')">
+                <button class="nav-dropdown-btn">ℹ️ About</button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" onclick="navigateTo('index.html#about')">
+                        <div class="dropdown-icon">🎯</div>
+                        <div class="dropdown-text">
+                            <div class="dropdown-title">About System</div>
+                            <div class="dropdown-desc">Về Hệ Thống</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <!-- ACCOUNT DROPDOWN -->
+            <div class="account-dropdown" onclick="toggleAccountDropdown(event)">
+                <button class="account-btn">👤</button>
+                <div class="account-menu">
+                    <div class="account-menu-item" onclick="openLoginModal()">
+                        🔐 Đăng Nhập
+                    </div>
+                    <div class="account-menu-item" onclick="openSignupModal()">
+                        ✍️ Đăng Ký
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Hệ Thống Quản Lý Giải Đua Ngựa</h1>
+            <p class="hero-subtitle">Quản lý toàn bộ hoạt động đua ngựa từ đăng ký, lên lịch đến theo dõi kết quả</p>
+        </div>
+    </div>
+
+    <!-- FEATURES SECTION -->
+    <div style="padding: 60px 40px; max-width: 1200px; margin: 0 auto;">
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🐴</div>
+                <div class="feature-title">Quản Lý Ngựa</div>
+                <div class="feature-desc">Đăng ký và quản lý thông tin chi tiết về ngựa của bạn</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🏇</div>
+                <div class="feature-title">Quản Lý Jockey</div>
+                <div class="feature-desc">Quản lý hồ sơ, chứng chỉ và lịch trình của jockey</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📅</div>
+                <div class="feature-title">Lên Lịch Đua</div>
+                <div class="feature-desc">Tổ chức và lên lịch cho các cuộc đua</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <div class="feature-title">Thống Kê</div>
+                <div class="feature-desc">Phân tích hiệu suất và thống kê chi tiết</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- STATS SECTION -->
+    <div class="stats">
+        <div class="stat-item">
+            <div class="stat-number">1,250+</div>
+            <div class="stat-label">Cuộc Đua</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">500+</div>
+            <div class="stat-label">Ngựa Đua</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">300+</div>
+            <div class="stat-label">Jockey</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">10K+</div>
+            <div class="stat-label">Người Dùng</div>
+        </div>
+    </div>
+
+    <!-- LOGIN MODAL -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeLoginModal()">✕</button>
+            
+            <div class="modal-title">Đăng Nhập</div>
+
+            <div class="form-group">
+                <label class="form-label">Tên Tài Khoản</label>
+                <input type="text" class="form-input" id="login-username">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Mật Khẩu</label>
+                <input type="password" class="form-input" id="login-password">
+            </div>
+
+            <div class="form-checkbox">
+                <input type="checkbox" id="remember">
+                <label for="remember">Ghi nhớ</label>
+            </div>
+
+            <button class="form-button" onclick="handleLogin()">🔓 Đăng Nhập</button>
+
+            <div class="form-link">
+                <a onclick="switchToSignup()">Bạn chưa có tài khoản? Đăng ký ngay</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- SIGNUP MODAL -->
+    <div class="modal" id="signupModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeSignupModal()">✕</button>
+
+            <div class="modal-title">Đăng Ký</div>
+
+            <div class="form-group">
+                <label class="form-label">Chọn Vai Trò<span style="color: #ef4444;">*</span></label>
+                <div class="role-selector">
+                    <div class="role-option" onclick="selectSignupRole(this, 'owner')">
+                        <div class="role-option-icon">🐴</div>
+                        <div>Owner</div>
+                    </div>
+                    <div class="role-option" onclick="selectSignupRole(this, 'jockey')">
+                        <div class="role-option-icon">🏇</div>
+                        <div>Jockey</div>
+                    </div>
+                    <div class="role-option" onclick="selectSignupRole(this, 'spectator')">
+                        <div class="role-option-icon">👁️</div>
+                        <div>Spectator</div>
+                    </div>
+                </div>
+                <input type="hidden" id="signup-role">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-input" id="signup-email">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Tên Tài Khoản</label>
+                <input type="text" class="form-input" id="signup-username">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Mật Khẩu</label>
+                <input type="password" class="form-input" id="signup-password">
+            </div>
+
+            <button class="form-button" onclick="handleSignup()">✓ Tạo Tài Khoản</button>
+
+            <div class="form-link">
+                <a onclick="switchToLogin()">Bạn đã có tài khoản? Đăng nhập</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <p>&copy; 2024 Horse Racing Management System. Tất cả quyền được bảo lưu.</p>
+    </div>
+
+    <script>
+        // Toggle dropdown menu
+        function toggleDropdown(event, type) {
+            event.stopPropagation();
+            
+            // Close all other dropdowns
+            document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+                if (dropdown !== event.currentTarget) {
+                    dropdown.classList.remove('active');
+                }
+            });
+            
+            // Close account dropdown
+            document.querySelectorAll('.account-dropdown').forEach(dropdown => {
+                dropdown.classList.remove('active');
+            });
+            
+            // Toggle current dropdown
+            event.currentTarget.classList.toggle('active');
+        }
+
+        // Toggle account dropdown
+        function toggleAccountDropdown(event) {
+            event.stopPropagation();
+            
+            // Close all other dropdowns
+            document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+                dropdown.classList.remove('active');
+            });
+            
+            // Toggle account dropdown
+            event.currentTarget.classList.toggle('active');
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.nav-dropdown') && !e.target.closest('.account-dropdown')) {
+                document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+                document.querySelectorAll('.account-dropdown').forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+            }
+        });
+
+        // Navigate to page
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+
+        // Go home
+        function goHome() {
+            window.location.href = 'index.html';
+        }
+
+        // Modal functions
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.add('active');
+            document.querySelector('.account-dropdown').classList.remove('active');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
+
+        function openSignupModal() {
+            document.getElementById('signupModal').classList.add('active');
+            document.querySelector('.account-dropdown').classList.remove('active');
+        }
+
+        function closeSignupModal() {
+            document.getElementById('signupModal').classList.remove('active');
+        }
+
+        function switchToSignup() {
+            closeLoginModal();
+            openSignupModal();
+        }
+
+        function switchToLogin() {
+            closeSignupModal();
+            openLoginModal();
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const loginModal = document.getElementById('loginModal');
+            const signupModal = document.getElementById('signupModal');
+            if (event.target == loginModal) {
+                closeLoginModal();
+            }
+            if (event.target == signupModal) {
+                closeSignupModal();
+            }
+        }
+
+        // Login handler
+        function handleLogin() {
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            
+            if (!username || !password) {
+                alert('⚠️ Vui lòng nhập tên tài khoản và mật khẩu!');
+                return;
+            }
+            
+            alert('✓ Đăng nhập thành công!');
+            closeLoginModal();
+        }
+
+        // Signup role selection
+        function selectSignupRole(element, role) {
+            document.querySelectorAll('.role-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            document.getElementById('signup-role').value = role;
+        }
+
+        // Signup handler
+        function handleSignup() {
+            const role = document.getElementById('signup-role').value;
+            const email = document.getElementById('signup-email').value;
+            const username = document.getElementById('signup-username').value;
+            const password = document.getElementById('signup-password').value;
+            
+            if (!role) {
+                alert('⚠️ Vui lòng chọn vai trò!');
+                return;
+            }
+            
+            if (!email || !username || !password) {
+                alert('⚠️ Vui lòng điền đầy đủ thông tin!');
+                return;
+            }
+            
+            alert('✓ Đăng ký thành công! Chuyển hướng...');
+            navigateTo('owner-dashboard.html');
+        }
+    </script>
+</body>
+</html>

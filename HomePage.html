@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horse Racing Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-bg: #0f172a;
+            --secondary-bg: #1e293b;
+            --card-bg: #1a1f3a;
+            --border-color: #334155;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-green: #10b981;
+            --accent-yellow: #fbbf24;
+            --accent-red: #ef4444;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --transition: 0.3s ease-in-out;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-bg) 0%, #1a2332 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ============== NAVBAR ============== */
+        .navbar {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-blue);
+        }
+
+        .logo-icon {
+            font-size: 32px;
+        }
+
+        /* ============== NAVIGATION DROPDOWNS ============== */
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex: 1;
+            margin: 0 40px;
+        }
+
+        .nav-dropdown {
+            position: relative;
+        }
+
+        .nav-dropdown-btn {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all var(--transition);
+        }
+
+        .nav-dropdown-btn:hover {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .nav-dropdown-btn::after {
+            content: '▼';
+            font-size: 8px;
+            transition: transform var(--transition);
+        }
+
+        .nav-dropdown-btn.active::after {
+            transform: rotate(180deg);
+        }
+
+        /* ============== DROPDOWN MENU ============== */
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            min-width: 280px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all var(--transition);
+            z-index: 1001;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .nav-dropdown.active .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            padding: 12px 16px;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all var(--transition);
+            border-left: 3px solid transparent;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-left-color: var(--accent-blue);
+            padding-left: 20px;
+        }
+
+        .dropdown-icon {
+            font-size: 18px;
+            min-width: 20px;
+        }
+
+        .dropdown-text {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .dropdown-title {
+            font-weight: 600;
+            color: var(--accent-blue);
+            font-size: 13px;
+        }
+
+        .dropdown-desc {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        /* ============== AUTH BUTTONS ============== */
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn-nav {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all var(--transition);
+        }
+
+        .btn-login {
+            background: transparent;
+            color: var(--accent-blue);
+            border: 1px solid var(--accent-blue);
+        }
+
+        .btn-login:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .btn-signup {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+        }
+
+        .btn-signup:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+        }
+
+        /* ============== ACCOUNT DROPDOWN ============== */
+        .account-dropdown {
+            position: relative;
+        }
+
+        .account-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .account-btn:hover {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .account-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            min-width: 200px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all var(--transition);
+            z-index: 1001;
+        }
+
+        .account-dropdown.active .account-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .account-menu-item {
+            padding: 12px 16px;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all var(--transition);
+            cursor: pointer;
+            font-size: 14px;
+            border-left: 3px solid transparent;
+        }
+
+        .account-menu-item:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-left-color: var(--accent-blue);
+            padding-left: 20px;
+        }
+
+        .account-menu-item:first-child {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* ============== HERO SECTION ============== */
+        .hero {
+            min-height: calc(100vh - 70px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 40px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(139, 92, 246, 0.05));
+        }
+
+        .hero-content {
+            max-width: 900px;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 56px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin-bottom: 50px;
+            line-height: 1.6;
+        }
+
+        /* ============== FEATURES GRID ============== */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            transition: all var(--transition);
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(59, 130, 246, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .feature-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .feature-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* ============== ROLES SHOWCASE ============== */
+        .roles-section {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(139, 92, 246, 0.05));
+            padding: 80px 40px;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .roles-title {
+            font-size: 36px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--accent-blue);
+        }
+
+        .roles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .role-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            transition: all var(--transition);
+            cursor: pointer;
+        }
+
+        .role-card:hover {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.05);
+            transform: scale(1.05);
+        }
+
+        .role-icon {
+            font-size: 56px;
+            margin-bottom: 12px;
+        }
+
+        .role-name {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .role-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* ============== STATS ============== */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 40px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        /* ============== CONTENT SECTIONS ============== */
+        .content-section {
+            display: none;
+            padding: 60px 40px;
+            max-width: 1200px;
+            margin: 40px auto;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: var(--accent-blue);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .content-card {
+            background: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 24px;
+            transition: all var(--transition);
+        }
+
+        .content-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-4px);
+        }
+
+        .content-card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--accent-blue);
+            margin-bottom: 12px;
+        }
+
+        .content-card p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ============== MODAL ============== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 450px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease-in-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(40px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            transition: color var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--accent-red);
+        }
+
+        .modal-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        /* ============== FORM ============== */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-input,
+        select {
+            width: 100%;
+            padding: 12px;
+            background: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            transition: all var(--transition);
+        }
+
+        .form-input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .form-checkbox input {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .form-button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all var(--transition);
+            margin-top: 8px;
+        }
+
+        .form-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+        }
+
+        /* ============== ROLE SELECTOR ============== */
+        .role-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .role-option {
+            padding: 10px;
+            border: 2px solid var(--border-color);
+            background: var(--secondary-bg);
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+            transition: all var(--transition);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .role-option:hover {
+            border-color: var(--accent-blue);
+        }
+
+        .role-option.selected {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-blue);
+        }
+
+        .role-option-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* ============== DIVIDER ============== */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 20px 0;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        /* ============== DEMO BUTTONS ============== */
+        .demo-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .demo-btn {
+            padding: 8px;
+            background: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all var(--transition);
+        }
+
+        .demo-btn:hover {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .demo-btn.full {
+            grid-column: span 2;
+        }
+
+        /* ============== LINK ============== */
+        .form-link {
+            text-align: center;
+            font-size: 13px;
+            margin-top: 16px;
+        }
+
+        .form-link a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .form-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* ============== FOOTER ============== */
+        .footer {
+            background: var(--secondary-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 40px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        /* ============== RESPONSIVE ============== */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 12px 20px;
+                flex-wrap: wrap;
+            }
+
+            .nav-menu {
+                flex-wrap: wrap;
+                width: 100%;
+                margin: 12px 0 0 0;
+                order: 3;
+            }
+
+            .nav-dropdown-btn {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+
+            .dropdown-menu {
+                min-width: 240px;
+            }
+
+            .hero-title {
+                font-size: 36px;
+            }
+
+            .hero-subtitle {
+                font-size: 16px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .roles-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .role-selector {
+                grid-template-columns: 1fr;
+            }
+
+            .demo-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .demo-btn.full {
+                grid-column: span 1;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <div class="logo">
+            🐎 Horse Racing
+        </div>
+
+        <!-- NAVIGATION DROPDOWNS -->
+        <div class="nav-menu">
+            <!-- RACING DROPDOWN -->
+            <div class="nav-dropdown" onclick="toggleDropdown(event, 'racing')">
+                <button class="nav-dropdown-btn">🏇 Racing</button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" onclick="showContent('racing-horse-owner')">
+                        <div class="dropdown-icon">🐴</div>
+                        <div class="dropdown-text">
+                            <div class="dropdown-title">Horse Owner</div>
+                            <div class="dropdown-desc">Manage Your Horses</div>
+                        </div>
+                    </a>
+                    <a class="dropdown-item" onclick="showContent('racing-jockey')">
+                        <div class="dropdown-icon">🏇</div>
+                        <div class="dropdown-text">
+                            <div class="dropdown-title">Jockey</div>
+                            <div class="dropdown-desc">Jockey Management</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- NEWS DROPDOWN -->
+            <div class="nav-dropdown" onclick="toggleDropdown(event, 'news')">
+                <button class="nav-dropdown-btn">📰 News</button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" onclick="showContent('news-latest')">
+                        <div class="dropdown-icon">⭐</div>
+                        <div class="dropdown-text">
+                            <div class="dropdown-title">Latest News</div>
+                            <div class="dropdown-desc">Recent Updates</div>
+                        </div>
+                    </a>
+                    <a class="dropdown-item" onclick="showContent('news-races')">
+                        <div class="dropdown-icon">🏁</div>
+                        <div class="dropdown-text">
+                            <div class="dropdown-title">Race News</div>
+                            <div class="dropdown-desc">Race Highlights</div>
+                        </div>
+                    </a>
+                    <a class="dropdown-item" onclick="showContent('news-events')">
+                        <div class="dropdown-icon">📅</div>
+                        <div class="dropdown-text">
+                            <div class="dropdown-title">Events</div>
+                            <div class="dropdown-desc">Upcoming Events</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ABOUT DROPDOWN -->
+            <div class="nav-dropdown" onclick="toggleDropdown(event, 'about')">
+                <button class="nav-dropdown-btn">ℹ️ About</button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" onclick="showContent('about-system')">
+                        <div class="dropdown-icon">🎯</div>
+                        <div class="dropdown-text">
+                            <div class="dropdown-title">About System</div>
+                            <div class="dropdown-desc">System Overview</div>
+                        </div>
+                    </a>
+                    <a class="dropdown-item" onclick="showContent('about-team')">
+                        <div class="dropdown-icon">👥</div>
+                        <div class="dropdown-text">
+                            <div class="dropdown-title">Our Team</div>
+                            <div class="dropdown-desc">Meet The Team</div>
+                        </div>
+                    </a>
+                    <a class="dropdown-item" onclick="showContent('about-contact')">
+                        <div class="dropdown-icon">📞</div>
+                        <div class="dropdown-text">
+                            <div class="dropdown-title">Contact Us</div>
+                            <div class="dropdown-desc">Get in Touch</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <!-- ACCOUNT DROPDOWN -->
+            <div class="account-dropdown" onclick="toggleAccountDropdown(event)">
+                <button class="account-btn">👤</button>
+                <div class="account-menu">
+                    <div class="account-menu-item" onclick="openLoginModal()">
+                        🔐 Đăng Nhập
+                    </div>
+                    <div class="account-menu-item" onclick="openSignupModal()">
+                        ✍️ Đăng Ký
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Hệ Thống Quản Lý Giải Đua Ngựa</h1>
+            <p class="hero-subtitle">Quản lý toàn bộ hoạt động đua ngựa từ đăng ký, lên lịch đến theo dõi kết quả</p>
+        </div>
+    </div>
+
+    <!-- FEATURES SECTION -->
+    <div style="padding: 60px 40px; max-width: 1200px; margin: 0 auto;">
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🐴</div>
+                <div class="feature-title">Quản Lý Ngựa</div>
+                <div class="feature-desc">Đăng ký và quản lý thông tin chi tiết về ngựa của bạn</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🏇</div>
+                <div class="feature-title">Quản Lý Jockey</div>
+                <div class="feature-desc">Quản lý hồ sơ, chứng chỉ và lịch trình của jockey</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📅</div>
+                <div class="feature-title">Lên Lịch Đua</div>
+                <div class="feature-desc">Tổ chức và lên lịch cho các cuộc đua</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <div class="feature-title">Thống Kê</div>
+                <div class="feature-desc">Phân tích hiệu suất và thống kê chi tiết</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RACING - HORSE OWNER CONTENT -->
+    <div class="content-section" id="racing-horse-owner">
+        <h2 class="section-title">🐴 Horse Owner Management</h2>
+        <div class="content-grid">
+            <div class="content-card">
+                <h3>📝 Register Horse</h3>
+                <p>Enter horse name, breed, age, and physical characteristics for registration.</p>
+            </div>
+            <div class="content-card">
+                <h3>🐎 My Horses</h3>
+                <p>View and manage all your registered horses with complete details.</p>
+            </div>
+            <div class="content-card">
+                <h3>📅 Race Schedule</h3>
+                <p>View upcoming races and register your horses for participation.</p>
+            </div>
+            <div class="content-card">
+                <h3>📊 Performance Stats</h3>
+                <p>Track wins, placements, and detailed performance analytics.</p>
+            </div>
+            <div class="content-card">
+                <h3>📸 Photo Gallery</h3>
+                <p>Upload and manage photographs of your horses.</p>
+            </div>
+            <div class="content-card">
+                <h3>📋 Medical Records</h3>
+                <p>Keep track of health records and veterinary documents.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- RACING - JOCKEY CONTENT -->
+    <div class="content-section" id="racing-jockey">
+        <h2 class="section-title">🏇 Jockey Management</h2>
+        <div class="content-grid">
+            <div class="content-card">
+                <h3>👤 My Profile</h3>
+                <p>Manage your personal details and professional information.</p>
+            </div>
+            <div class="content-card">
+                <h3>📜 Certificates</h3>
+                <p>Upload and verify your racing licenses and certifications.</p>
+            </div>
+            <div class="content-card">
+                <h3>📅 My Schedule</h3>
+                <p>View assigned races and manage your race schedule.</p>
+            </div>
+            <div class="content-card">
+                <h3>🏆 Achievements</h3>
+                <p>Track your wins, achievements, and career statistics.</p>
+            </div>
+            <div class="content-card">
+                <h3>📊 Performance</h3>
+                <p>View win rates and detailed performance metrics.</p>
+            </div>
+            <div class="content-card">
+                <h3>🐴 Horse Pairings</h3>
+                <p>Track your performance with different horses.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEWS - LATEST NEWS CONTENT -->
+    <div class="content-section" id="news-latest">
+        <h2 class="section-title">⭐ Latest News</h2>
+        <div class="content-grid">
+            <div class="content-card">
+                <h3>🏆 Championship Winners</h3>
+                <p>Read about the latest championship winners and their achievements.</p>
+            </div>
+            <div class="content-card">
+                <h3>🐴 Horse Records</h3>
+                <p>Breaking news about record-setting performances and milestones.</p>
+            </div>
+            <div class="content-card">
+                <h3>📰 Industry Updates</h3>
+                <p>Stay updated with the latest news from the horse racing industry.</p>
+            </div>
+            <div class="content-card">
+                <h3>🌟 Featured Stories</h3>
+                <p>In-depth features about notable horses and jockeys.</p>
+            </div>
+            <div class="content-card">
+                <h3>💡 Racing Tips</h3>
+                <p>Expert tips and insights for horse racing enthusiasts.</p>
+            </div>
+            <div class="content-card">
+                <h3>📺 Media Coverage</h3>
+                <p>Video highlights and media coverage of major races.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEWS - RACE NEWS CONTENT -->
+    <div class="content-section" id="news-races">
+        <h2 class="section-title">🏁 Race News</h2>
+        <div class="content-grid">
+            <div class="content-card">
+                <h3>🥇 First Place Finishers</h3>
+                <p>Coverage of winning horses and jockeys from recent races.</p>
+            </div>
+            <div class="content-card">
+                <h3>⚡ Fastest Times</h3>
+                <p>Track records and fastest race times achieved.</p>
+            </div>
+            <div class="content-card">
+                <h3>📊 Race Analysis</h3>
+                <p>Detailed analysis and commentary on major races.</p>
+            </div>
+            <div class="content-card">
+                <h3>🎯 Unexpected Results</h3>
+                <p>Coverage of surprising upsets and thrilling finishes.</p>
+            </div>
+            <div class="content-card">
+                <h3>📈 Race Statistics</h3>
+                <p>Comprehensive statistics and data from recent races.</p>
+            </div>
+            <div class="content-card">
+                <h3>🔍 Deep Dives</h3>
+                <p>In-depth analysis of race outcomes and performances.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEWS - EVENTS CONTENT -->
+    <div class="content-section" id="news-events">
+        <h2 class="section-title">📅 Events</h2>
+        <div class="content-grid">
+            <div class="content-card">
+                <h3>📅 Upcoming Races</h3>
+                <p>Schedule of upcoming races and events for the season.</p>
+            </div>
+            <div class="content-card">
+                <h3>🎪 Special Events</h3>
+                <p>Information about special racing events and festivals.</p>
+            </div>
+            <div class="content-card">
+                <h3>🎟️ Ticket Information</h3>
+                <p>How to purchase tickets for upcoming races.</p>
+            </div>
+            <div class="content-card">
+                <h3>🏟️ Venue Details</h3>
+                <p>Information about racing venues and locations.</p>
+            </div>
+            <div class="content-card">
+                <h3>👥 Registration</h3>
+                <p>Register your horses for upcoming events.</p>
+            </div>
+            <div class="content-card">
+                <h3>📢 Announcements</h3>
+                <p>Latest announcements about races and events.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABOUT - SYSTEM CONTENT -->
+    <div class="content-section" id="about-system">
+        <h2 class="section-title">🎯 About Our System</h2>
+        <div class="content-grid">
+            <div class="content-card">
+                <h3>🌟 Our Mission</h3>
+                <p>We aim to provide the most comprehensive horse racing management platform.</p>
+            </div>
+            <div class="content-card">
+                <h3>💻 Technology</h3>
+                <p>Built with modern technology for reliability and performance.</p>
+            </div>
+            <div class="content-card">
+                <h3>🔒 Security</h3>
+                <p>Your data is protected with industry-leading security measures.</p>
+            </div>
+            <div class="content-card">
+                <h3>📱 Multi-Platform</h3>
+                <p>Access from desktop, tablet, or mobile device anytime, anywhere.</p>
+            </div>
+            <div class="content-card">
+                <h3>🚀 Features</h3>
+                <p>Comprehensive features for managing all aspects of horse racing.</p>
+            </div>
+            <div class="content-card">
+                <h3>🤝 Support</h3>
+                <p>Dedicated support team ready to help you succeed.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABOUT - TEAM CONTENT -->
+    <div class="content-section" id="about-team">
+        <h2 class="section-title">👥 Our Team</h2>
+        <div class="content-grid">
+            <div class="content-card">
+                <h3>🎯 Leadership</h3>
+                <p>Experienced leadership team with decades of horse racing expertise.</p>
+            </div>
+            <div class="content-card">
+                <h3>👨‍💻 Developers</h3>
+                <p>Talented developers creating innovative solutions for the industry.</p>
+            </div>
+            <div class="content-card">
+                <h3>📊 Data Analysts</h3>
+                <p>Expert analysts providing insights and statistics.</p>
+            </div>
+            <div class="content-card">
+                <h3>🎨 Designers</h3>
+                <p>Creative designers crafting beautiful user experiences.</p>
+            </div>
+            <div class="content-card">
+                <h3>🏆 Racing Experts</h3>
+                <p>Seasoned professionals from the horse racing world.</p>
+            </div>
+            <div class="content-card">
+                <h3>💬 Customer Success</h3>
+                <p>Dedicated team ensuring your success with our platform.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABOUT - CONTACT CONTENT -->
+    <div class="content-section" id="about-contact">
+        <h2 class="section-title">📞 Contact Us</h2>
+        <div class="content-grid">
+            <div class="content-card">
+                <h3>📧 Email Support</h3>
+                <p>Email us at support@horseracing.com for assistance.</p>
+            </div>
+            <div class="content-card">
+                <h3>📞 Phone Support</h3>
+                <p>Call us at +1 (800) 123-4567 for immediate help.</p>
+            </div>
+            <div class="content-card">
+                <h3>💬 Live Chat</h3>
+                <p>Get instant support through our live chat feature.</p>
+            </div>
+            <div class="content-card">
+                <h3>🏢 Office Address</h3>
+                <p>123 Racing Boulevard, Horse City, HC 12345</p>
+            </div>
+            <div class="content-card">
+                <h3>⏰ Business Hours</h3>
+                <p>Mon - Fri: 8am - 6pm, Sat - Sun: 10am - 4pm</p>
+            </div>
+            <div class="content-card">
+                <h3>🔗 Social Media</h3>
+                <p>Follow us on Facebook, Twitter, and Instagram for updates.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIN MODAL -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeLoginModal()">✕</button>
+            
+            <div class="modal-title">Đăng Nhập</div>
+
+            <div class="form-group">
+                <label class="form-label">Tên Tài Khoản</label>
+                <input type="text" class="form-input" id="login-username">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Mật Khẩu</label>
+                <input type="password" class="form-input" id="login-password">
+            </div>
+
+            <div class="form-checkbox">
+                <input type="checkbox" id="remember">
+                <label for="remember">Ghi nhớ</label>
+            </div>
+
+            <button class="form-button" onclick="handleLogin()">🔓 Đăng Nhập</button>
+
+            <div class="form-link">
+                <a onclick="switchToSignup()">Bạn chưa có tài khoản? Đăng ký ngay</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- SIGNUP MODAL -->
+    <div class="modal" id="signupModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeSignupModal()">✕</button>
+
+            <div class="modal-title">Đăng Ký</div>
+
+            <div class="form-group">
+                <label class="form-label">Chọn Vai Trò<span style="color: var(--accent-red);">*</span></label>
+                <div class="role-selector">
+                    <div class="role-option" onclick="selectSignupRole(this, 'owner')">
+                        <div class="role-option-icon">🐴</div>
+                        <div>Owner</div>
+                    </div>
+                    <div class="role-option" onclick="selectSignupRole(this, 'jockey')">
+                        <div class="role-option-icon">🏇</div>
+                        <div>Jockey</div>
+                    </div>
+                    <div class="role-option" onclick="selectSignupRole(this, 'spectator')">
+                        <div class="role-option-icon">👁️</div>
+                        <div>Spectator</div>
+                    </div>
+                </div>
+                <input type="hidden" id="signup-role">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-input" id="signup-email">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Tên Tài Khoản</label>
+                <input type="text" class="form-input" id="signup-username">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Mật Khẩu</label>
+                <input type="password" class="form-input" id="signup-password">
+            </div>
+
+            <button class="form-button" onclick="handleSignup()">✓ Tạo Tài Khoản</button>
+
+            <div class="form-link">
+                <a onclick="switchToLogin()">Bạn đã có tài khoản? Đăng nhập</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle account dropdown
+        function toggleAccountDropdown(event) {
+            event.stopPropagation();
+            
+            // Close all other dropdowns
+            document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+                dropdown.classList.remove('active');
+            });
+            
+            // Toggle account dropdown
+            event.currentTarget.classList.toggle('active');
+        }
+
+        // Toggle navigation dropdown menu
+        function toggleDropdown(event, type) {
+            event.stopPropagation();
+            
+            // Close all other dropdowns
+            document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+                if (dropdown !== event.currentTarget) {
+                    dropdown.classList.remove('active');
+                }
+            });
+            
+            // Close account dropdown
+            document.querySelectorAll('.account-dropdown').forEach(dropdown => {
+                dropdown.classList.remove('active');
+            });
+            
+            // Toggle current dropdown
+            event.currentTarget.classList.toggle('active');
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.nav-dropdown') && !e.target.closest('.account-dropdown')) {
+                document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+                document.querySelectorAll('.account-dropdown').forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+            }
+        });
+
+        // Show content section
+        function showContent(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show selected section
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.classList.add('active');
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            // Close all dropdowns
+            document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+                dropdown.classList.remove('active');
+            });
+        }
+
+        // Modal functions
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.add('active');
+            document.querySelector('.account-dropdown').classList.remove('active');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
+
+        function openSignupModal() {
+            document.getElementById('signupModal').classList.add('active');
+            document.querySelector('.account-dropdown').classList.remove('active');
+        }
+
+        function closeSignupModal() {
+            document.getElementById('signupModal').classList.remove('active');
+        }
+
+        function switchToSignup() {
+            closeLoginModal();
+            openSignupModal();
+        }
+
+        function switchToLogin() {
+            closeSignupModal();
+            openLoginModal();
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const loginModal = document.getElementById('loginModal');
+            const signupModal = document.getElementById('signupModal');
+            if (event.target == loginModal) {
+                closeLoginModal();
+            }
+            if (event.target == signupModal) {
+                closeSignupModal();
+            }
+        }
+
+        // Login handler
+        function handleLogin() {
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            
+            if (!username || !password) {
+                alert('⚠️ Vui lòng nhập tên tài khoản và mật khẩu!');
+                return;
+            }
+            
+            alert('✓ Đăng nhập thành công!');
+            closeLoginModal();
+        }
+
+        // Navigate based on role
+        function navigateToRole(role) {
+            localStorage.setItem('userRole', role);
+            const routes = {
+                'owner': 'horse-registration.html',
+                'jockey': 'jockey-management.html',
+                'spectator': 'betting-interface.html'
+            };
+            window.location.href = routes[role];
+        }
+
+        // Signup role selection
+        function selectSignupRole(element, role) {
+            document.querySelectorAll('.role-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            document.getElementById('signup-role').value = role;
+        }
+
+        // Signup handler
+        function handleSignup() {
+            const role = document.getElementById('signup-role').value;
+            const email = document.getElementById('signup-email').value;
+            const username = document.getElementById('signup-username').value;
+            const password = document.getElementById('signup-password').value;
+            
+            if (!role) {
+                alert('⚠️ Vui lòng chọn vai trò!');
+                return;
+            }
+            
+            if (!email || !username || !password) {
+                alert('⚠️ Vui lòng điền đầy đủ thông tin!');
+                return;
+            }
+            
+            alert('✓ Đăng ký thành công! Chuyển hướng...');
+            navigateToRole(role);
+        }
+    </script>
+</body>
+</html>
